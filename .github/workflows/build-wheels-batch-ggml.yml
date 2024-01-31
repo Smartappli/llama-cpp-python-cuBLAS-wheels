@@ -5,7 +5,7 @@ on:
     inputs:
       versions:
         description: 'Comma-seperated version tags of llama-cpp-python-ggml to build'
-        default: 'v0.1.78,v0.1.77'
+        default: 'v0.2.27,v0.2.28,v0.2.29,v0.2.30,v0.2.31,v0.2.32,v0.2.33,v0.2.34,v0.2.35,v0.2.36,v0.2.37'
         required: true
         type: string
 
