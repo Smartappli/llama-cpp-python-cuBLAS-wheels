@@ -13,8 +13,7 @@ jobs:
 
       - name: Build
         shell: pwsh
-        run: |
-          .\generate-html.ps1
+        run: ./generate-html.ps1
         
       - name: Get latest release
         id: get_release
