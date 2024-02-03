@@ -11,6 +11,8 @@ jobs:
 
     steps:
 
+      - uses: actions/checkout@v4
+
       - name: Build
         shell: pwsh
         run: ./generate-html.ps1
