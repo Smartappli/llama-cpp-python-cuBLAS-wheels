@@ -28,9 +28,9 @@ You can install a specific version with:
 ```
 python -m pip install llama-cpp-python==<version> --prefer-binary --extra-index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX2/cu117
 ```
-An example for installing 0.1.62 for CUDA 12.1 on a CPU without AVX2 support:
+An example for installing 0.2.39 for CUDA 12.1 on a CPU without AVX2 support:
 ```
-python -m pip install llama-cpp-python==0.1.62 --prefer-binary --extra-index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX/cu121
+python -m pip install llama-cpp-python==0.2.39 --prefer-binary --extra-index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX/cu121
 ```
 List of available versions:
 ```
