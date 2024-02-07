@@ -94,6 +94,7 @@ jobs:
       run:
         shell: pwsh
     env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CUDAVER: ${{ matrix.cuda }}
       AVXVER: ${{ matrix.releasetag }}
       PCKGVER: ${{ inputs.version }}
