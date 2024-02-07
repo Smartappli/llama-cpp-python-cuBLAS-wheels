@@ -49,7 +49,6 @@ jobs:
       run:
         shell: pwsh
     env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       CONFIGIN: ${{ inputs.config }}
       EXCLUDEIN: ${{ inputs.exclude }}
         
@@ -84,6 +83,7 @@ jobs:
       run:
         shell: pwsh
     env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       AVXVER: ${{ matrix.avx }}
       PCKGVER: ${{ inputs.version }}
 
