@@ -42,7 +42,7 @@ You can also replace the existing version in one command like so:
 ```
 python -m pip install llama-cpp-python --force-reinstall --no-deps --index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX2/cu117
 -OR-
-python -m pip install llama-cpp-python==0.1.66 --force-reinstall --no-deps --index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX2/cu117
+python -m pip install llama-cpp-python==0.2.39 --force-reinstall --no-deps --index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX2/cu117
 -OR-
 python -m pip install llama-cpp-python --prefer-binary --upgrade --extra-index-url=https://smartappli.github.io/llama-cpp-python-cuBLAS-wheels/AVX2/cu117
 ```
