@@ -27,7 +27,7 @@ jobs:
         id: compare_release
         run: |
           # Read the release info from the downloaded artifact
-          PREVIOUS_RELEASE=$(cat llama-cpp-python-release-info 2> /dev/null || echo "NONE")
+          PREVIOUS_RELEASE=$(cat llama-cpp-python-release-info.txt 2> /dev/null || echo "NONE")
           echo "previous release: $PREVIOUS_RELEASE"
 
           # Compare the fetched release tag with the previous release tag
@@ -51,11 +51,32 @@ jobs:
       - name: Store artifacts
         run: |
           # Store the newly fetched release version in a file
-          echo "${{ steps.get_release.outputs.RELEASE_TAG }}" > llama-cpp-python-release-info
-          echo "Saved ${{ steps.get_release.outputs.RELEASE_TAG }} to llama-cpp-python-release-info"
+          echo "${{ steps.get_release.outputs.RELEASE_TAG }}" > llama-cpp-python-release-info.txt
+          echo "Saved ${{ steps.get_release.outputs.RELEASE_TAG }} to llama-cpp-python-release-info.txt"
 
-      - name: Upload new artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: llama-cpp-python-info
-          path: llama-cpp-python-info
+      - name: Upload new file
+        if: steps.compare_release.outputs.release_changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          timestamp=$(date +'%Y%m%d%H%M%S')
+          branch_name="update-file-$timestamp"
+      
+          git checkout -b "$branch_name"
+      
+          git add llama-cpp-python-release-info.txt
+      
+          git commit -m "Update file"
+      
+          git push origin "$branch_name"
+      
+          git checkout main
+          git merge --no-ff "$branch_name"
+          git push origin main
+      
+          # delete the temporary branch
+          git branch -d "$branch_name"
+          git push origin --delete "$branch_name"
