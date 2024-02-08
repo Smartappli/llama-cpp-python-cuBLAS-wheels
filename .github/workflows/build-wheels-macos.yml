@@ -79,9 +79,29 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.define_matrix.outputs.matrix) }}
     env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       OSVER: ${{ matrix.os }}
 
     steps:
+
+      - name: ⌛ rate 1
+        shell: pwsh
+        run: |
+          # add random sleep since we run on fixed schedule
+          sleep (get-random -max 1200)
+          
+          # get currently authenticated user rate limit info
+          $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+      
+          # if we don't have at least 100 requests left, wait until reset
+          if ($rate.remaining -lt 350) {
+              $wait = ($rate.reset - (Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
+              echo "Rate limit remaining is $($rate.remaining), waiting for $($wait) seconds to reset"
+              sleep $wait
+              $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+              echo "Rate limit has reset to $($rate.remaining) requests"
+          }
+    
       - uses: actions/checkout@v4
         with:
           repository: 'abetlen/llama-cpp-python'
@@ -124,6 +144,24 @@ jobs:
             export MACOSX_DEPLOYMENT_TARGET="14.0"
             VERBOSE=1 python -m build --wheel
           fi
+
+      - name: ⌛ rate 2
+        shell: pwsh
+        run: |
+          # add random sleep since we run on fixed schedule
+          sleep (get-random -max 1200)
+          
+          # get currently authenticated user rate limit info
+          $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+      
+          # if we don't have at least 100 requests left, wait until reset
+          if ($rate.remaining -lt 350) {
+              $wait = ($rate.reset - (Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
+              echo "Rate limit remaining is $($rate.remaining), waiting for $($wait) seconds to reset"
+              sleep $wait
+              $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+              echo "Rate limit has reset to $($rate.remaining) requests"
+          }
           
       - name: Upload files to a GitHub release
         id: upload-release
