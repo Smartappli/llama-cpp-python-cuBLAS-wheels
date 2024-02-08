@@ -2,8 +2,10 @@ name: Check for new release of llama-cpp-python
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0,12 * * *'
   workflow_dispatch:
+
+permissions: write-all
 
 jobs:
   check:
@@ -39,10 +41,11 @@ jobs:
 
       - name: Call workflow to build code
         if: steps.compare_release.outputs.release_changed == 'true'
-        uses: benc-uk/workflow-dispatch@v1
+        uses: benc-uk/workflow-dispatch@v1.2.2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           workflow: build-wheels-full-release.yml
-          version: ${{ steps.get_release.outputs.RELEASE_TAG }}
       
       - name: Store artifacts
         run: |
