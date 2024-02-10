@@ -135,6 +135,24 @@ jobs:
           repository: 'abetlen/llama-cpp-python'
           ref: ${{ inputs.version }}
           submodules: 'recursive'
+
+      - name: ⌛ rate 2
+        shell: pwsh
+        run: |
+          # add random sleep since we run on fixed schedule
+          sleep (get-random -max 1200)
+          
+          # get currently authenticated user rate limit info
+          $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+      
+          # if we don't have at least 100 requests left, wait until reset
+          if ($rate.remaining -lt 400) {
+              $wait = ($rate.reset - (Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
+              echo "Rate limit remaining is $($rate.remaining), waiting for $($wait) seconds to reset"
+              sleep $wait
+              $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+              echo "Rate limit has reset to $($rate.remaining) requests"
+          } 
           
       - name: Install Linux ROCm SDK
         if: runner.os == 'Linux'
@@ -198,6 +216,24 @@ jobs:
             $pyScripts = (Get-ChildItem $(Join-Path '.' 'llama_cpp_cuda' '*.py'))
             $pyScripts.fullname.foreach({New-Item $_ -itemType File -value (Get-Content $_ -raw).replace('import llama_cpp.llama','from . import llama') -force})
           }
+
+      - name: ⌛ rate 3
+        shell: pwsh
+        run: |
+          # add random sleep since we run on fixed schedule
+          sleep (get-random -max 1200)
+          
+          # get currently authenticated user rate limit info
+          $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+      
+          # if we don't have at least 100 requests left, wait until reset
+          if ($rate.remaining -lt 400) {
+              $wait = ($rate.reset - (Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
+              echo "Rate limit remaining is $($rate.remaining), waiting for $($wait) seconds to reset"
+              sleep $wait
+              $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+              echo "Rate limit has reset to $($rate.remaining) requests"
+          } 
         
       - name: Build Wheel
         run: |
@@ -259,7 +295,7 @@ jobs:
             python -m build --wheel
           }
 
-      - name: ⌛ rate 2
+      - name: ⌛ rate 4
         shell: pwsh
         run: |
           # add random sleep since we run on fixed schedule
