@@ -164,6 +164,24 @@ jobs:
           (gi 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VC\*\BuildCustomizations').fullname.foreach({cp $y $_})
           $cupath = 'CUDA_PATH_V' + $env:CUDAVER.Remove($env:CUDAVER.LastIndexOf('.')).Replace('.','_')
           echo "$cupath=$env:CONDA_PREFIX" >> $env:GITHUB_ENV
+
+      - name: ⌛ rate 2
+        shell: pwsh
+        run: |
+          # add random sleep since we run on fixed schedule
+          sleep (get-random -max 1200)
+          
+          # get currently authenticated user rate limit info
+          $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+      
+          # if we don't have at least 100 requests left, wait until reset
+          if ($rate.remaining -lt 400) {
+              $wait = ($rate.reset - (Get-Date (Get-Date).ToUniversalTime() -UFormat %s))
+              echo "Rate limit remaining is $($rate.remaining), waiting for $($wait) seconds to reset"
+              sleep $wait
+              $rate = gh api rate_limit | convertfrom-json | select -expandproperty rate
+              echo "Rate limit has reset to $($rate.remaining) requests"
+          } 
           
       - name: Install Dependencies
         run: |
@@ -208,7 +226,7 @@ jobs:
             python -m build --wheel
           }
 
-      - name: ⌛ rate 2
+      - name: ⌛ rate 3
         shell: pwsh
         run: |
           # add random sleep since we run on fixed schedule
