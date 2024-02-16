@@ -2,11 +2,11 @@ Set-Location $PSScriptRoot
 
 $destinationDir = if (Test-Path $(Join-Path $(Resolve-Path '.') 'index')) {Join-Path '.' 'index' -resolve} else {(New-Item 'index' -ItemType 'Directory').fullname}
 $avxVersions = "AVX","AVX2","AVX512","basic"
-$cudaVersions = "11.6","11.7","11.8","12.0","12.1","12.2","12.3","rocm5.4.2","rocm5.5","rocm5.5.1","rocm5.6.1","rocm5.7.1","cpu"
-$packageVersions = (23..27+29..42).foreach({"$_".Insert(0,'0.2.')})
-$pythonVersions = "3.7","3.8","3.9","3.10","3.11"
+$cudaVersions = "12.0","12.1","12.2","rocm5.5.1","rocm5.6.1","rocm5.7.1","cpu"
+$packageVersions = (23..27+29..44).foreach({"$_".Insert(0,'0.2.')})
+$pythonVersions = "3.10","3.11"
 $supportedSystems = 'linux_x86_64','win_amd64','macosx_11_0_x86_64','macosx_12_0_x86_64','macosx_13_0_x86_64','macosx_14_0_x86_64','macosx_11_0_arm64','macosx_12_0_arm64','macosx_13_0_arm64','macosx_14_0_arm64','macosx_11_0_aarch64','macosx_12_0_aarch64','macosx_13_0_aarch64','macosx_14_0_aarch64'
-$wheelSource = 'https://github.com/smartappli/llama-cpp-python-cuBLAS-wheels/releases/download'
+$wheelSource = 'https://github.com/smartappli/serge-wheels/releases/download'
 $packageName = 'llama_cpp_python'
 $packageNameNormalized = 'llama-cpp-python'
 $packageNameAlt = 'llama_cpp_python_ggml'
