@@ -65,12 +65,12 @@ jobs:
           ref: ${{ inputs.version }}
           submodules: 'recursive'
           
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.pyver }}
         
       - name: Setup Mamba
-        uses: conda-incubator/setup-miniconda@v2.2.0
+        uses: conda-incubator/setup-miniconda@v3.0.2
         with:
           activate-environment: "build"
           python-version: ${{ matrix.pyver }}
@@ -148,7 +148,7 @@ jobs:
             python -m build --wheel
           }
         
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.releasetag == 'wheels' && 'AVX2' || matrix.releasetag }}
           path: ./dist/*.whl
@@ -202,7 +202,7 @@ jobs:
           ref: ${{ inputs.version }}
           submodules: 'recursive'
           
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.pyver }}
           
@@ -237,7 +237,7 @@ jobs:
             VERBOSE=1 python -m build --wheel
           fi
         
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: macos-wheels
           path: ./dist/*.whl
