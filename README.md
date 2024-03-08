@@ -6,10 +6,6 @@ Requirements:
 - CUDA 11.6 - 12.2
 - CPython 3.8 - 3.11
 
-> [!WARNING]
-> MacOS 11 and Windows ROCm wheels are unavailable for 0.2.21+.  
-> This is due to build issues with llama.cpp that are not yet resolved.
-
 ROCm builds for AMD GPUs: https://github.com/smartappli/llama-cpp-python-cuBLAS-wheels/releases/tag/rocm  
 Metal builds for MacOS 11.0+: https://github.com/smartappli/llama-cpp-python-cuBLAS-wheels/releases/tag/metal
 
