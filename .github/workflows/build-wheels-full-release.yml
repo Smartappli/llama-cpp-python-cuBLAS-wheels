@@ -14,13 +14,13 @@ permissions:
   
 jobs:
   run_main:
-    name: Build CPU-only Wheels
+    name: Build ${{ inputs.version }} CPU-only Wheels
     uses: ./.github/workflows/build-wheels-cpu.yml
     with:
       version: ${{ inputs.version }}
       
   run_macos:
-    name: Build MacOS Metal Wheels
+    name: Build ${{ inputs.version }} MacOS Metal Wheels
     needs: run_main
     uses: ./.github/workflows/build-wheels-macos.yml
     with:
@@ -35,21 +35,21 @@ jobs:
       cpu: '0'
 
   run_textgen:
-    name: Build Text Gen Wheels
+    name: Build ${{ inputs.version }} Text Gen Wheels
     needs: run_cuda
     uses: ./.github/workflows/build-wheels-oobabooga.yml
     with:
       version: ${{ inputs.version }} 
   
   run_rocm:
-    name: Build ROCm Wheels
+    name: Build ${{ inputs.version }} ROCm Wheels
     needs: run_textgen
     uses: ./.github/workflows/build-wheels-rocm-full.yml
     with:
       version: ${{ inputs.version }}
 
   run_tensorcore:
-    name: Build Tensorcore Wheels
+    name: Build ${{ inputs.version }} Tensorcore Wheels
     needs: run_rocm
     uses: ./.github/workflows/build-wheels-tensorcores.yml
     with:
